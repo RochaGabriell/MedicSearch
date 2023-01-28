@@ -1,4 +1,10 @@
 {
+    // workbench
+    "workbench.editor.enablePreview": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Omni",
+
+    // editor
     "python.formatting.provider": "yapf",
     "editor.formatOnSave": true,
     "python.formatting.yapfArgs": [
