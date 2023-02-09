@@ -1,17 +1,17 @@
 {
-    // workbench
-    "workbench.editor.enablePreview": false,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Omni",
+  // workbench
+  "workbench.editor.enablePreview": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Omni",
 
-    // editor
-    "python.formatting.provider": "yapf",
-    "editor.formatOnSave": true,
-    "python.formatting.yapfArgs": [
-        "--style={ based_on_style: pep8, column_limit: 120 }"
-    ],
-    "files.exclude": {
-        "**/*.pyc": {"when": "$(basename).py"},
-        "**/__pycache__": true
-    },
+  // editor
+  "python.formatting.provider": "yapf",
+  "editor.formatOnSave": true,
+  "python.formatting.yapfArgs": [
+    "--style={ based_on_style: pep8, column_limit: 120 }"
+  ],
+  "files.exclude": {
+    "**/*.pyc": { "when": "$(basename).py" },
+    "**/__pycache__": true
+  }
 }
