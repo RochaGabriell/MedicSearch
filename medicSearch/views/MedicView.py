@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+# from django.http import HttpResponse
+from django.shortcuts import render
 from medicSearch.models import Profile
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def list_medics_view(request):
@@ -15,11 +18,27 @@ def list_medics_view(request):
         medics = medics.filter(user__first_name__contains=name)
     if speciality is not None:
         medics = medics.filter(specialties__id=speciality)
+
     if neighborhood is not None:
         medics = medics.filter(addresses__neighborhood=neighborhood)
+    else:
+        if city is not None:
+            medics = medics.filter(addresses__neighborhood__city=city)
+        elif state is not None:
+            medics = medics.filter(addresses__neighborhood__city__state=state)
 
-    print(medics.all())
-    
+    if len(medics) > 0:
+        paginator = Paginator(medics, 8)
+        page = request.GET.get('page')
+        medics = paginator.get_page(page)
 
+    get_copy = request.GET.copy()
+    # Criando uma variável chamada parameters e copiando para ela os parâmetros atuais da url através do request.GET.copy(), removendo o parâmetro page com o método pop('page', True).
+    parameters = get_copy.pop('page', True) and get_copy.urlencode() # Com o método get_copy.urlencode(), ao trocarmos de um número de paginação para outro não perdemos os parâmetros da url, pois foi usado a variável parameters para resolver isso
 
-    return HttpResponse('listagem de 1 ou mais médicos')
+    context = {
+        'medics': medics,
+        'parameters': parameters
+    }
+
+    return render(request, template_name='medic/medics.html', context=context, status=200) # render possui um parâmetro chamado context, que é onde podemos passar um dicionário com dados que poderão ser acessados pelo nosso template.

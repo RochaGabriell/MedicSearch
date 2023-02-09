@@ -1,4 +1,5 @@
 from medicSearch.models import *
+from django.db.models import Sum, Count
 
 
 class Profile(models.Model):
@@ -9,9 +10,9 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     token = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
-    favorites = models.ManyToManyField(User, blank=True,related_name='favorites')
-    specialties = models.ManyToManyField(Speciality, blank=True,related_name='specialties')
-    addresses = models.ManyToManyField(Address, blank=True,related_name='addresses')
+    favorites = models.ManyToManyField(User, blank=True, related_name='favorites')
+    specialties = models.ManyToManyField(Speciality, blank=True, related_name='specialties')
+    addresses = models.ManyToManyField(Address, blank=True, related_name='addresses')
 
     def __str__(self):
         return '{}'.format(self.user.username)
@@ -29,5 +30,21 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         try:
             instance.profile.save()
+
         except:
             pass
+
+    def show_scoring_average(self):
+        from .Rating import Rating
+        try:
+            rating = Rating.objects.filter(user_rated=self.user).aggregate(Sum('value'), Count('user'))
+
+            if rating['user_count'] > 0:
+                scoring_average = rating['value_sum'] / rating['user__count']
+                scoring_average = round(scoring_average, 2)  # Colocando o valor pra duas casas decimais
+
+                return scoring_average
+            return 'Sem avaliações'
+
+        except:
+            return 'Sem avaliações'
