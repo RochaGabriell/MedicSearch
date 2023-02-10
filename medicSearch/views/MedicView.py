@@ -1,5 +1,5 @@
 # from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from medicSearch.models import Profile
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -42,3 +42,46 @@ def list_medics_view(request):
     }
 
     return render(request, template_name='medic/medics.html', context=context, status=200) # render possui um parâmetro chamado context, que é onde podemos passar um dicionário com dados que poderão ser acessados pelo nosso template.
+
+
+def add_favorite_view(request):
+    page = request.POST.get("page")
+    name = request.POST.get("name")
+    speciality = request.POST.get("speciality")
+    neighborhood = request.POST.get("neighborhood")
+    city = request.POST.get("city")
+    state = request.POST.get("state")
+    id = request.POST.get("id")
+
+    try:
+        profile = Profile.objects.filter(user=request.user).first()
+        medic = Profile.objects.filter(user__id=id).first()
+        profile.favorites.add(medic.user)
+        profile.save()
+        msg = "Favorito adicionado com sucesso"
+        _type = "success"
+
+    except Exception as erro:
+        print(f"Erro {erro}")
+        msg = "Um erro ocorreu ao salvar o médico nos favoritos"
+        _type = "danger"
+
+    if page:
+        arguments = f"?page={page}"
+    else:
+        arguments = "?page=1"
+
+    if name:
+        arguments += f"&name={name}"
+    if speciality:
+        arguments += f"&specinality={speciality}"
+    if neighborhood:
+        arguments += f"&neighborhood={neighborhood}"
+    if city:
+        arguments += f"&city={city}"
+    if state:
+        arguments += f"&state={state}"
+
+    arguments += f"&msg={msg}&type={_type}"
+
+    return redirect(to=f'/medic/{arguments}')
