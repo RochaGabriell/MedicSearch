@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Médicos{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-3" id="profile-area">
+                <div id="image-profile" style="background-image: url('/media/{{profile.image}}');"></div>
+                {% if profile.role == 1 %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-building"></i> Administrador
+                </p>
+                {% elif profile.role == 2 %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-user-md"></i> Médico</p>
+                {% else %}
+                <p class="badge badge-primary text-center" id="badge-role"><i class="fa fa-user"></i> Paciente</p>
+                {% endif %}
+
+                {% if profile.user.id == request.user.id %}
+                <a id="icon-edit" href="#"><i class="fa fa-edit"></i></a>
+                {% endif %}
+
+                <ul class="list-group">
+                    <li class="list-group-item">Nome: {{profile.user.get_full_name | default:"Sem nome"}}</li>
+                    <li class="list-group-item">Usuário: {{profile.user.username | default:"Sem usuário"}}</li>
+                    <li class="list-group-item">E-mail: {{profile.user.email | default:"Sem e-mail"}}</li>
+                    <li class="list-group-item">Nascimento: {{profile.birthday | date:'d/m/Y' | default:"Sem data"}}
+                    </li>
+
+                    {% if profile.role == 2 %}
+                    <li class="list-group-item">Nota: {{ profile.show_scoring_average }}</li>
+                    <li class="list-group-item">Especialidades: {{ profile.specialties.all | join:", " }}</li>
+                    {% endif %}
+
+                    {% if profile.role == 2 and request.user.is_authenticated %}
+                    <li class="list-group-item">
+                        <a class="btn btn-warning" href="{% url 'profile' profile.user.id %}">
+                            Avaliar <i class="fa fa-star"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {% if profile.role == 1 or profile.role == 3 %}
+            <div class="col-xs-12 col-md-9" id="favorites-area">
+                <div class="alert alert-info">Total de favoritos: {{favorites | length}}</div>
+                {% if request.GET.msg %}
+                <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
+                {% endif %}
+                <div class="row">
+                    {% for favorite in favorites %}
+                    <div class="col-xs-12 col-md-4 col-lg-4">
+                        <div class="card mb-4">
+                            <div class="image-circle" style="background-image: url('/media/{{favorite.image}}');"></div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{favorite.user.get_full_name}}</h5>
+                                <h6>Nota: {{favorite.show_scoring_average}} <i class="fa fa-star"></i></h6>
+                                <ul class="specialties">
+                                    {% for speciality in favorite.specialties.all %}
+                                    <li>{{speciality}}</li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="address mb-2">
+                                    {{favorite.addresses.first.address | default:"Nenhum endereço." | slice:":15"}}...
+                                </div>
+                                <a href="{% url 'profile' favorite.id %}" class="btn btn-primary btn-card">Ver médico</a>
+                                
+                                {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'medic-favorite-remove' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{favorite.id}}" name="id">
+                                    <input type="hidden" value="{{request.GET.page}}" name="page">
+                                    <button type="submit" class="btn btn-danger btn-card">
+                                        <i class="fa fa-heart"></i>Remover</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="row">
+                    <nav aria-label="Page navigation" class="navigation">
+                        <ul class="pagination">
+                            {% if favorites.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">&laquo; Primeiro</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ favorites.previous_page_number }}">Anterior</a></li>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link" href="#">Página {{ favorites.number }} de {{favorites.paginator.num_pages }}.</a></li>
+                            {% if favorites.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ favorites.next_page_number }}">Próximo</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ favorites.paginator.num_pages }}">Último &raquo;</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="col-xs-12 col-md-3" id="addresses-area"></div>
+            <div class="col-xs-12 col-md-6" id="ratings-area"></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -48,3 +48,7 @@ class Profile(models.Model):
 
         except:
             return 'Sem avaliações'
+
+    def show_favorites(self):
+        ids = [result.id for result in self.favorites.all()]
+        return Profile.objects.filter(user__id__in=ids)
