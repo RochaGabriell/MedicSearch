@@ -13,7 +13,7 @@
             <div class="col-xs-12 col-md-3 col-lg-3">
                 <div class="card mb-4">
 
-                    <div class="image-circle" style="background-image: url('/media/{{medic.image}}');"></div>
+                    <div class="image-circle" style="background-image: url('/media/{{medic.image}}'); background-size: cover;"></div>
 
                     <div class="card-body">
                         <h5 class="card-title">{{medic.user.get_full_name}}</h5>
@@ -59,16 +59,25 @@
                 <ul class="pagination">
                     {% if medics.has_previous %}
                     <!-- Perceba que usamos a variável parameters sempre para manter os parâmetros da url mesmo quando trocamos entre uma número de paginação e outro -->
-                    <li class="page-item"><a class="page-link" href="?page=1{{ parameters }}">&laquo; Primeiro</a></li>
-                    <li class="page-item"><a class="page-link"
-                            href="?page={{ medics.previous_page_number }}{{ parameters }}">Anterior</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{{ parameters }}">&laquo; Primeiro</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ medics.previous_page_number }}{{ parameters }}">Anterior</a>
+                    </li>
                     {% endif %}
-                    <li class="page-item"><a class="page-link" href="#">Página {{ medics.number }} de {{medics.paginator.num_pages }}.</a></li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">Página {{ medics.number }} de {{medics.paginator.num_pages }}.</a>
+                    </li>
+
                     {% if medics.has_next %}
-                    <li class="page-item"><a class="page-link"
-                            href="?page={{ medics.next_page_number }}{{ parameters }}">Próximo</a></li>
-                    <li class="page-item"><a class="page-link"
-                            href="?page={{ medics.paginator.num_pages }}{{ parameters }}">Último &raquo;</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ medics.next_page_number }}{{ parameters }}">Próximo</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ medics.paginator.num_pages }}{{ parameters }}">Último &raquo;</a>
+                    </li>
                     {% endif %}
                 </ul>
             </nav>
