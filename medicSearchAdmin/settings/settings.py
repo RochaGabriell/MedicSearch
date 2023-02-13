@@ -128,10 +128,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ADMIN_LOGO = 'img/logo.png'
 
 ADMIN_STYLE = {
-    'background': '#121212',
-    'primary-color': '#2B3746',
-    'secondary-color': '#354151',
-    'tertiary-color': '#F2F9FC',
+    'background': 'black',
+    'primary-color': '#164B36',
+    'primary-text': '#d6d5d2',
+    'secondary-color': '#092117',
+    'secondary-text': 'white',
+    'tertiary-color': '#51B48E',
+    'tertiary-text': 'black',
+    'breadcrumb-color': '#092117',
+    'breadcrumb-text': '#e0e0e0',
+    'focus-color': '#eaeaea',
+    'focus-text': '#666',
+    'primary-button': '#26904A',
+    'primary-button-text':' white',
+    'secondary-button': '#999',
+    'secondary-button-text': 'white',
+    'link-color': '#e0e0e0',
+    'link-color-hover': 'lighten($link-color, 20%)',
     'logo-width': 'auto',
     'logo-height': '35px'
 }
