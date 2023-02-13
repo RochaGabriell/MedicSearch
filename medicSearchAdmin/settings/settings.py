@@ -29,12 +29,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_menu',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'medicSearch.apps.MedicsearchConfig',
 ]
 
@@ -120,3 +123,19 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django Admin Menu Theme
+ADMIN_LOGO = 'img/logo.png'
+
+ADMIN_STYLE = {
+    'background': '#121212',
+    'primary-color': '#2B3746',
+    'secondary-color': '#354151',
+    'tertiary-color': '#F2F9FC',
+    'logo-width': 'auto',
+    'logo-height': '35px'
+}
+
+MENU_WEIGHT = {
+    'Auth': 100
+}
