@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Perfil {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-6 col-lg-6 offset-md-3 offset-lg-3" method="POST" action="" enctype="multipart/form-data"> <!-- O enctype="multipart/form-data" é o responsável por dizer ao formulário que enviaremos arquivos em nossa requisição para o servidor. -->
+                {% if message is not None %}
+                <div class="alert alert-{{ message.type }}">
+                    {{message.text }}
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    {% csrf_token %}
+                    
+                    {% for input in userForm %}
+                    {% if not input.is_hidden %}
+                    <div class="form-group col-md-6">
+                        {{input.label}}
+                        {{input}}
+
+                        {% for error in f.errors %}
+                        <div class="invalid-feedback" style="display: initial;">
+                            {{error}}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% else %}
+                    {{input}}
+
+                    {% endif %}
+                    {% endfor %}
+        
+                    {% for input in profileForm %}
+                    {% if not input.is_hidden %}
+                    <div class="form-group col-md-6">
+                        {{input.label}}
+                        {{input}}
+
+                        {% for error in f.errors %}
+                        <div class="invalid-feedback" style="display: initial;">
+                            {{error}}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% else %}
+                    {{input}}
+                    
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
