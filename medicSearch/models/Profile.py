@@ -39,10 +39,9 @@ class Profile(models.Model):
         try:
             rating = Rating.objects.filter(user_rated=self.user).aggregate(Sum('value'), Count('user'))
 
-            if rating['user_count'] > 0:
-                scoring_average = rating['value_sum'] / rating['user__count']
+            if rating['user__count'] > 0:
+                scoring_average = rating['value__sum'] / rating['user__count']
                 scoring_average = round(scoring_average, 2)  # Colocando o valor pra duas casas decimais
-
                 return scoring_average
             return 'Sem avaliações'
 
