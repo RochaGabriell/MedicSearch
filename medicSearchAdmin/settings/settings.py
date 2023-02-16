@@ -124,6 +124,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+LOGIN_URL = '/login' # Define a rota padrão de login do sistema.
+LOGIN_REDIRECT_URL = '/' # Define para onde seremos redirecionados caso o login ocorra com sucesso.
+LOGOUT_URL = '/logout' # Define a rota padrão de logout do sistema.
+LOGOUT_REDIRECT_URL = '/login' # Define para onde seremos redirecionados caso o logout ocorra com sucesso.
+
+
 # Django Admin Menu Theme
 ADMIN_LOGO = 'img/logo.png'
 
