@@ -1,6 +1,7 @@
 # from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from medicSearch.models import Profile
+from medicSearch.models import Profile, Rating
+from medicSearch.forms.MedicForm import MedicRatingForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -103,7 +104,6 @@ def remove_favorite_view(request):
         msg = "Um erro ocorreu ao remover o médico nos favoritos."
         _type = "danger"
 
-
     if page:
         arguments = f"?page={page}"
     else:
@@ -112,3 +112,32 @@ def remove_favorite_view(request):
     arguments += f"&msg={msg}&type={_type}"
 
     return redirect(to=f'/profile/{arguments}')
+
+
+def rate_medic(request, medic_id=None):
+    medic = Profile.objects.filter(user__id=medic_id).first()
+    rating = Rating.objects.filter(user=request.user, user_rated=medic.user).first()
+    message = None
+    initial = {'user': request.user, 'user_rated': medic.user} # Preencher o formulário informando quem avaliou e quem está sendo avaliado. Como os campos user e user_rated foram modificados para hidden,o usuário não poderá vê-lo e nem alterá-lo, deixar os valores desses campos já preenchidos.
+
+    if request.method == 'POST':
+        ratingForm = MedicRatingForm(request.POST, instance=rating, initial=initial)
+    else:
+        ratingForm = MedicRatingForm(instance=rating, initial=initial)
+
+    if ratingForm.is_valid() and medic.role == 2:
+        ratingForm.save()
+        message = {'type': 'success', 'text': 'Avaliação salva com sucesso!'}
+    elif medic.role != 2 and request.method == 'POST':
+        message = {'type': 'danger', 'text': 'Esse usuário não é Médico!'}
+    else:
+        if request.method == 'POST':
+            message = {'type': 'danger', 'text': 'Erro ao salvar avaliação!'}
+
+    context = {
+        'ratingForm': ratingForm,
+        'medic': medic,
+        'message': message
+    }
+
+    return render(request, template_name='medic/rating.html', context=context, status=200)
