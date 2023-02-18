@@ -1,4 +1,5 @@
 # from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from medicSearch.models import Profile, Rating
 from medicSearch.forms.MedicForm import MedicRatingForm
@@ -114,6 +115,7 @@ def remove_favorite_view(request):
     return redirect(to=f'/profile/{arguments}')
 
 
+@login_required # Informar a view que o usuário precisa se autenticar para acessá-la.
 def rate_medic(request, medic_id=None):
     medic = Profile.objects.filter(user__id=medic_id).first()
     rating = Rating.objects.filter(user=request.user, user_rated=medic.user).first()
