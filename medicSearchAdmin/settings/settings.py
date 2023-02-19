@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'medicSearch.apps.MedicsearchConfig',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -159,3 +163,28 @@ ADMIN_STYLE = {
 MENU_WEIGHT = {
     'Auth': 100
 }
+
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_FACEBOOK_KEY = '549379146987638' # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'a5f2d15d1c420c4532e65cb372da8411' # App Secret
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # Lista de permissões para acessar as propriedades de dados que nosso aplicativo requer.
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email, picture.type(large), link'
+} # Possui uma chave fields em que o valor é uma lista de atributos que devem ser retornados pelo Facebook quando o usuário tiver efetuado login com êxito. Os valores dependem de SOCIAL_AUTH_FACEBOOK_SCOPE.
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'picture'),
+    ('link', 'profile_url'),
+] # Especificar os dados adicionais que solicitamos ao banco de dados. Esses dados ficarão 'extra data' do painel 'user social auths'. 
+# Pra usar qualquer atributo que está no campo extra fields em nosso template html podemos fazê-lo chamando {{ass.extra_data.nome_do_campo}}. Ex: {{ass.extra_data.picture.data.url}}.
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '45626635179-f7m389civ0qduht30npc3d1kvek281aj.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
