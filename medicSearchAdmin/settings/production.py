@@ -1,3 +1,4 @@
+import dj_database_url
 from .settings import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -11,9 +12,10 @@ ALLOWED_HOSTS = ['web-production-e30d7.up.railway.app']
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASE_URL = 'postgresql://postgres:yvWEU2yHdb78C7mgx53r@containers-us-west-37.railway.app:6773/railway'
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
     }
 }
