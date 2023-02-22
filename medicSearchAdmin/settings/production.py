@@ -5,7 +5,7 @@ from .settings import *
 SECRET_KEY = '*pl4xa)00@s-cj7pgu+ym_f7+mjp6h5-jlics0itvaik+97^mk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'medicsearch.up.railway.app']
 
