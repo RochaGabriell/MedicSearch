@@ -5,14 +5,14 @@ from .settings import *
 SECRET_KEY = '*pl4xa)00@s-cj7pgu+ym_f7+mjp6h5-jlics0itvaik+97^mk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['web-production-e30d7.up.railway.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'medicsearch.up.railway.app']
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASE_URL = 'postgresql://postgres:bJWH2HKQpNkvvk13OpWl@containers-us-west-188.railway.app:6758/railway'
+DATABASE_URL = 'postgresql://postgres:GMBHXHlPYp5bZUyH8sO7@containers-us-west-22.railway.app:5994/railway'
 
 DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
