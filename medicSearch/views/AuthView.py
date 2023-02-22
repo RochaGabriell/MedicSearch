@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from medicSearch.forms.AuthForm import LoginForm, RegisterForm
+from medicSearch.forms.AuthForm import LoginForm, RegisterForm, RecoveryForm
 from django.contrib.auth.models import User
+from medicSearch.models.Profile import Profile
 
 
 def login_view(request):
@@ -80,6 +81,43 @@ def register_view(request):
     }
 
     return render(request, template_name='auth/auth.html', context=context, status=200)
+
+
+def recovery_view(request):
+    recoveryForm = RecoveryForm()
+    message = None
+
+    if request.method == 'POST':
+        recoveryForm = recoveryForm(request.POST)
+
+        if recoveryForm.is_valid():
+            email = request.POST['email']
+            profile = Profile.objects.filter(user__email=email).first()
+            if profile is not None:
+                try:
+                    send_email(profile) # Método de envio de e-mail.
+                    message = {'type': 'success', 'text': 'Um e-mail foi enviado para sua caixa de entrada.'}
+                except:
+                    message = {'type': 'danger', 'text': 'Erro no envio do e-mail.'}
+            else:
+                message = {'type': 'danger', 'text': 'E-mail inexistente.'}
+        else:
+            message = {'type': 'danger', 'text': 'Formulário inválido'}
+
+        context = {
+            'form': recoveryForm,
+            'message': message,
+            'title': 'Recuperar senha',
+            'button_text': 'Recuperar',
+            'link_text': 'Login',
+            'link_href': '/login'
+        }
+
+        return render(request, template_name='auth/auth.html', context=context, status=200)
+
+
+def send_email(profile):
+    pass
 
 
 def logout_view(request):
