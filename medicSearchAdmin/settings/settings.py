@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-!k7pqk6vz(mvyjuxhlv&7v#ys(e6@gf*b7np0^y&sfy%855-i!
 
 # ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = ['https://medicsearch.up.railway.app']
+
 # Application definition
 
 INSTALLED_APPS = [
