@@ -26,16 +26,16 @@
                         <div class="col form-group">
                             <select class="form-control" name="speciality">
                                 <option value="0" selected disabled>Selecione uma especialidade</option>
-                                {% for speciality in specialties.all %}
-                                <option value="1">{{speciality}}</option>
+                                {% for speciality in specialties %}
+                                <option value="{{speciality.id}}">{{speciality}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col form-group">
                             <select class="form-control" name="state">
                                 <option value="0" selected disabled>Selecione um estado</option>
-                                {% for state in states.all %}
-                                <option value="1">{{state}}</option>
+                                {% for state in states %}
+                                <option value="{{state.id}}">{{state}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -45,16 +45,16 @@
                         <div class="col form-group">
                             <select class="form-control" name="city">
                                 <option value="0" selected disabled>Selecione uma cidade</option>
-                                {% for city in cities.all %}
-                                <option value="1">{{city}}</option>
+                                {% for city in cities %}
+                                <option value="{{city.id}}">{{city}}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col form-group">
                             <select class="form-control" name="neighborhood">
                                 <option value="0" selected disabled>Selecione um bairro</option>
-                                {% for neighborhood in neighborhoods.all %}
-                                <option value="1">{{neighborhood}}</option>
+                                {% for neighborhood in neighborhoods %}
+                                <option value="{{neighborhood.id}}">{{neighborhood}}</option>
                                 {% endfor %}
                             </select>
                         </div>
