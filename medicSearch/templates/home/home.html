@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6 offset-sm-0 offset-md-3 offset-md-3">
-                <form action={% url 'medics' %} method="GET">
+                <form action="{% url 'medics' %}" method="GET">
 
                     <h3 class="text-center">Buscar um médico</h3>
 
@@ -26,13 +26,17 @@
                         <div class="col form-group">
                             <select class="form-control" name="speciality">
                                 <option value="0" selected disabled>Selecione uma especialidade</option>
-                                <option value="1">Neurocirugia</option>
+                                {% for speciality in specialties.all %}
+                                <option value="1">{{speciality}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col form-group">
                             <select class="form-control" name="state">
                                 <option value="0" selected disabled>Selecione um estado</option>
-                                <option value="1">Rio de Janeiro</option>
+                                {% for state in states.all %}
+                                <option value="1">{{state}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -41,13 +45,17 @@
                         <div class="col form-group">
                             <select class="form-control" name="city">
                                 <option value="0" selected disabled>Selecione uma cidade</option>
-                                <option value="1">Rio de Janeiro</option>
+                                {% for city in cities.all %}
+                                <option value="1">{{city}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col form-group">
                             <select class="form-control" name="neighborhood">
                                 <option value="0" selected disabled>Selecione um bairro</option>
-                                <option value="1">Botafogo</option>
+                                {% for neighborhood in neighborhoods.all %}
+                                <option value="1">{{neighborhood}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
