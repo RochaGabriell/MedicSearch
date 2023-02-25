@@ -6,6 +6,7 @@ from medicSearch.models.City import City
 from medicSearch.models.Neighborhood import Neighborhood
 from medicSearch.models.Profile import Profile
 
+
 def home_view(request):
     # Filtro os perfis que têm pelo menos uma especialidade associada a ele
     medics_has_specialties = Profile.objects.filter(specialties__isnull=False).distinct()
@@ -49,5 +50,5 @@ def home_view(request):
     return render(request, template_name='home/home.html', context=context, status=200)
 
 
-def error_404_view(request, exception):
-    return render(request, template_name='status/404.html')
+def page_not_found(request, exception):
+    return render(request, template_name='status/404.html', status=404) 

@@ -26,3 +26,5 @@ urlpatterns = [
     path('profile/', include('medicSearch.urls.ProfileUrls')),
     path('medic/', include('medicSearch.urls.MedicUrls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Aqui estamos dizendo ao Django que dentro do admin poderemos acessar o diretório de media e o static
+
+handler404 = 'medicSearch.views.HomeView.page_not_found'
