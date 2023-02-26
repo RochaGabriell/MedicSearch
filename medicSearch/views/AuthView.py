@@ -69,7 +69,7 @@ def register_view(request):
                 if user is not None:
                     message = {'type': 'success', 'text': 'Conta criada com sucesso!'}
                 else:
-                    message = {'type': 'danger', 'text': 'Um erroo correu ao tentar criar o usuário.'}
+                    message = {'type': 'danger', 'text': 'Um erro ocorreu ao tentar criar o usuário.'}
 
     context = {
         'form': registerForm,
@@ -104,16 +104,16 @@ def recovery_view(request):
         else:
             message = {'type': 'danger', 'text': 'Formulário inválido'}
 
-        context = {
-            'form': recoveryForm,
-            'message': message,
-            'title': 'Recuperar senha',
-            'button_text': 'Recuperar',
-            'link_text': 'Login',
-            'link_href': '/login'
-        }
+    context = {
+        'form': recoveryForm,
+        'message': message,
+        'title': 'Recuperar senha',
+        'button_text': 'Recuperar',
+        'link_text': 'Login',
+        'link_href': '/login'
+    }
 
-        return render(request, template_name='auth/auth.html', context=context, status=200)
+    return render(request, template_name='auth/auth.html', context=context, status=200)
 
 
 def send_email(profile):
