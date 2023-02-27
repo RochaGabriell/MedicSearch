@@ -28,6 +28,9 @@ SECRET_KEY = 'django-insecure-!k7pqk6vz(mvyjuxhlv&7v#ys(e6@gf*b7np0^y&sfy%855-i!
 
 CSRF_TRUSTED_ORIGINS = ['https://medicsearch.up.railway.app']
 
+# USE_X_FORWARDED_HOST = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -177,6 +180,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 SOCIAL_AUTH_FACEBOOK_KEY = '549379146987638' # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'a5f2d15d1c420c4532e65cb372da8411' # App Secret
