@@ -9,6 +9,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'medicsearch.up.railway.app']
 
+SECURE_SSL_REDIRECT = True
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
