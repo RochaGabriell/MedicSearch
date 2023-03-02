@@ -3,6 +3,11 @@ from django.contrib.auth import authenticate, login, logout
 from medicSearch.forms.AuthForm import LoginForm, RegisterForm, RecoveryForm
 from django.contrib.auth.models import User
 from medicSearch.models.Profile import Profile
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags 
+import hashlib
 
 
 def login_view(request):
@@ -117,7 +122,18 @@ def recovery_view(request):
 
 
 def send_email(profile):
-    pass
+    profile.token = hashlib.sha256().hexdigest()
+    profile.save()
+    
+    try:
+        html_message = render_to_string('auth/recovery.html', {'token': profile.token})
+        message = strip_tags(html_message)
+        send_mail(
+            subject="Recuperação de senha", message=message, html_message=html_message,
+            from_email=settings.EMAIL_HOST_USER, recipient_list=[profile.user.email], fail_silently=False,
+        )
+    except:
+        raise Exception  
 
 
 def logout_view(request):

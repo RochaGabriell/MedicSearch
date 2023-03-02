@@ -18,14 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!k7pqk6vz(mvyjuxhlv&7v#ys(e6@gf*b7np0^y&sfy%855-i!'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# ALLOWED_HOSTS = []
-
 CSRF_TRUSTED_ORIGINS = ['https://medicsearch.up.railway.app']
 
 # USE_X_FORWARDED_HOST = True
@@ -200,3 +192,12 @@ SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '45626635179-f7m389civ0qduht30npc3d1kvek281aj.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+
+EMAIL_USE_TLS = True # Diz se será usada a criptografia TLS ou não no envio.
+EMAIL_HOST = 'smtp.gmail.com' # host do seu provedor de e-mail
+EMAIL_HOST_USER = 'seuemail@gmail.com'
+EMAIL_HOST_PASSWORD = 'sua senha'
+EMAIL_PORT = 587 # porta que o provedor usará para fazer o enviodos e-mails
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # e-mail padrão para servir de remetente quando não colocarmos um remetente em nossos e-mails.
+EMAIL_USE_SSL = False # informa se será usada acriptografia SSL no envio. 
