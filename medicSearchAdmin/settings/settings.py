@@ -195,9 +195,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 
 EMAIL_USE_TLS = True # Diz se será usada a criptografia TLS ou não no envio.
-EMAIL_HOST = 'smtp.gmail.com' # host do seu provedor de e-mail
-EMAIL_HOST_USER = 'seuemail@gmail.com'
-EMAIL_HOST_PASSWORD = 'sua senha'
+EMAIL_HOST = 'smtp.sendgrid.net' # host do seu provedor de e-mail
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587 # porta que o provedor usará para fazer o enviodos e-mails
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER # e-mail padrão para servir de remetente quando não colocarmos um remetente em nossos e-mails.
-EMAIL_USE_SSL = False # informa se será usada acriptografia SSL no envio. 
+DEFAULT_FROM_EMAIL = 'gabrielrocha1902@gmail.com' # e-mail padrão para servir de remetente quando não colocarmos um remetente em nossos e-mails.
+EMAIL_USE_SSL = False # informa se será usada acriptografia SSL no envio.   

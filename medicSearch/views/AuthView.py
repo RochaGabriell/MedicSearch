@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from medicSearch.forms.AuthForm import LoginForm, RegisterForm, RecoveryForm
+from medicSearch.forms.AuthForm import LoginForm, RegisterForm, RecoveryForm, ChangePasswordForm
 from django.contrib.auth.models import User
 from medicSearch.models.Profile import Profile
 from django.conf import settings
-from django.core.mail import send_mail 
-from django.template.loader import render_to_string 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import hashlib
 
@@ -69,7 +69,7 @@ def register_view(request):
             elif verifyEmail is not None:
                 message = {'type': 'danger', 'text': 'Já existe um usuário com este e-mail!'}
             else:
-                user = User.objects.create_user(username, email, password) # Esse método traz algumas vantagens, como a validação do usuário para saber se ele já existe, ou se o username ou password não atendem às expectativas.
+                user = User.objects.create_user(username, email, password)  # Esse método traz algumas vantagens, como a validação do usuário para saber se ele já existe, ou se o username ou password não atendem às expectativas.
 
                 if user is not None:
                     message = {'type': 'success', 'text': 'Conta criada com sucesso!'}
@@ -122,22 +122,58 @@ def recovery_view(request):
 
 
 def send_email(profile):
-    profile.token = hashlib.sha256().hexdigest() 
+    profile.token = hashlib.sha256().hexdigest()
     profile.save()
 
     try:
-        html_message = render_to_string('auth/recovery.html', {'token': profile.token}) # Ele converte o html em string, preservando suas tags para o envio ocorrer e chegar ao destinatário com a formatação html.
-        message = strip_tags(html_message) # # Módulo formata o html da maneira certa para que seja enviado por e-mail.
+        html_message = render_to_string(
+            'auth/recovery.html', {'token': profile.token}
+        )  # Ele converte o html em string, preservando suas tags para o envio ocorrer e chegar ao destinatário com a formatação html.
+        message = strip_tags(html_message)  # Módulo formata o html da maneira certa para que seja enviado por e-mail.
         send_mail(
             subject="Recuperação de senha",
             message=message,
             html_message=html_message,
-            from_email=settings.EMAIL_HOST_USER,
+            from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[profile.user.email],
             fail_silently=False,
-        ) # método principal do módulo de envio que realiza a junção do assunto, remetente, destinatário e corpo do e-mail.
+        )  # método principal do módulo de envio que realiza a junção do assunto, remetente, destinatário e corpo do e-mail.
     except:
         raise Exception
+
+
+def change_password(request, token):
+    profile = Profile.objects.filter(token=token).first()
+    changePasswordForm = ChangePasswordForm()
+    message = None
+    link_text = 'Solicitar recuperação de senha'
+    link_href = '/recovery'
+
+    if profile is not None:
+        if request.method == 'POST':
+            changePasswordForm = ChangePasswordForm(request.POST)
+            if changePasswordForm.is_valid():
+                profile.user.set_password(request.POST['password'])
+                profile.token = None
+                profile.user.save()
+                profile.save()
+                message = {'type': 'success', 'text': 'Senha alterada com sucesso!!!'}
+                link_text = 'Login'
+                link_href = '/login'
+            else:
+                message = {'type': 'danger', 'text': 'Formulário inválido.'}
+    else:
+        message = {'type': 'danger', 'text': 'Token inválido. Solicite novamente'}
+
+    context = {
+        'form': changePasswordForm,
+        'message': message,
+        'title': 'Alterar senha',
+        'button_text': 'Alterar',
+        'link_text': link_text,
+        'link_href': link_href
+    }
+    return render(request, template_name='auth/auth.html', context=context, status=200)
 
 
 def logout_view(request):
