@@ -4,9 +4,9 @@ from medicSearch.forms.AuthForm import LoginForm, RegisterForm, RecoveryForm
 from django.contrib.auth.models import User
 from medicSearch.models.Profile import Profile
 from django.conf import settings
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags 
+from django.core.mail import send_mail 
+from django.template.loader import render_to_string 
+from django.utils.html import strip_tags
 import hashlib
 
 
@@ -93,14 +93,14 @@ def recovery_view(request):
     message = None
 
     if request.method == 'POST':
-        recoveryForm = recoveryForm(request.POST)
+        recoveryForm = RecoveryForm(request.POST)
 
         if recoveryForm.is_valid():
             email = request.POST['email']
             profile = Profile.objects.filter(user__email=email).first()
             if profile is not None:
                 try:
-                    send_email(profile) # Método de envio de e-mail.
+                    send_email(profile)  # Método de envio de e-mail.
                     message = {'type': 'success', 'text': 'Um e-mail foi enviado para sua caixa de entrada.'}
                 except:
                     message = {'type': 'danger', 'text': 'Erro no envio do e-mail.'}
@@ -122,18 +122,22 @@ def recovery_view(request):
 
 
 def send_email(profile):
-    profile.token = hashlib.sha256().hexdigest()
+    profile.token = hashlib.sha256().hexdigest() 
     profile.save()
-    
+
     try:
-        html_message = render_to_string('auth/recovery.html', {'token': profile.token})
-        message = strip_tags(html_message)
+        html_message = render_to_string('auth/recovery.html', {'token': profile.token}) # Ele converte o html em string, preservando suas tags para o envio ocorrer e chegar ao destinatário com a formatação html.
+        message = strip_tags(html_message) # # Módulo formata o html da maneira certa para que seja enviado por e-mail.
         send_mail(
-            subject="Recuperação de senha", message=message, html_message=html_message,
-            from_email=settings.EMAIL_HOST_USER, recipient_list=[profile.user.email], fail_silently=False,
-        )
+            subject="Recuperação de senha",
+            message=message,
+            html_message=html_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[profile.user.email],
+            fail_silently=False,
+        ) # método principal do módulo de envio que realiza a junção do assunto, remetente, destinatário e corpo do e-mail.
     except:
-        raise Exception  
+        raise Exception
 
 
 def logout_view(request):
