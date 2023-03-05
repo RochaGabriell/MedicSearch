@@ -1,7 +1,7 @@
 from .settings import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'l4gh65*3k1e-_8@eew!&ni5bp_by1og&ge6b$i8ze#(-+%%x@$'
+SECRET_KEY = os.environ.get('SECRET_KEY_TESTING')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

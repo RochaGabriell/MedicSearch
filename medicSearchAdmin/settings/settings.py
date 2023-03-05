@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -74,16 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'medicSearchAdmin.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -175,8 +166,8 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
-SOCIAL_AUTH_FACEBOOK_KEY = '549379146987638' # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = 'a5f2d15d1c420c4532e65cb372da8411' # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get('SOCIAL_AUTH_FACEBOOK_KEY') # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET') # App Secret
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'user_link'] # Lista de permissões para acessar as propriedades de dados que nosso aplicativo requer.
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id, name, email, picture.type(large), link'
@@ -190,14 +181,14 @@ SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
 # Pra usar qualquer atributo que está no campo extra fields em nosso template html podemos fazê-lo chamando {{ass.extra_data.nome_do_campo}}. Ex: {{ass.extra_data.picture.data.url}}.
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '45626635179-f7m389civ0qduht30npc3d1kvek281aj.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 
 EMAIL_USE_TLS = True # Diz se será usada a criptografia TLS ou não no envio.
 EMAIL_HOST = 'smtp.sendgrid.net' # host do seu provedor de e-mail
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587 # porta que o provedor usará para fazer o enviodos e-mails
-DEFAULT_FROM_EMAIL = 'gabrielrocha1902@gmail.com' # e-mail padrão para servir de remetente quando não colocarmos um remetente em nossos e-mails.
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL') # e-mail padrão para servir de remetente quando não colocarmos um remetente em nossos e-mails.
 EMAIL_USE_SSL = False # informa se será usada acriptografia SSL no envio.   

@@ -7,6 +7,7 @@ defusedxml==0.7.1
 dj-database-url==1.2.0
 Django==4.1.5
 django-admin-menu==1.6
+django-dotenv==1.4.2
 gunicorn==20.1.0
 idna==3.4
 libsass==0.22.0
